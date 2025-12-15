@@ -1,0 +1,11 @@
+pertanyaan,kode_gejala,nama_gejala,cf_pakar,penyakit
+Apakah kamu sering merasa sedih tanpa sebab?,G001,Sedih terus-menerus,0.8,Depresi
+Apakah kamu kehilangan minat pada aktivitas yang biasa kamu sukai?,G002,Hilang minat,0.7,Depresi
+Apakah kamu merasa cemas berlebihan terhadap hal kecil?,G003,Kecemasan,0.9,Anxiety
+Apakah kamu sulit tidur atau tidur berlebihan?,G004,Masalah tidur,0.6,Depresi
+Apakah kamu mudah marah atau tersinggung?,G005,Iritabilitas,0.7,Bipolar
+Apakah kamu sering merasa lelah tanpa alasan jelas?,G006,Kelelahan,0.8,Burnout
+Apakah kamu sering merasa tidak berharga atau bersalah?,G007,Rasa bersalah,0.9,Depresi
+Apakah kamu sulit berkonsentrasi atau mengambil keputusan?,G008,Konsentrasi buruk,0.7,Depresi
+Apakah kamu mengalami perubahan nafsu makan drastis?,G009,Perubahan nafsu makan,0.6,Depresi
+Apakah kamu merasa cemas saat berada di keramaian?,G010,Cemas di keramaian,0.8,Anxiety

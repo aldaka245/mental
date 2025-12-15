@@ -1,0 +1,11 @@
+pertanyaan,kode_gejala,nama_gejala,cf_pakar,penyakit
+Apakah Anda sering merasa sedih tanpa alasan yang jelas?,G01,Perasaan sedih berkepanjangan,0.8,Depresi
+Apakah Anda mengalami kesulitan tidur atau tidur terlalu lama?,G02,Gangguan tidur,0.7,Depresi
+Apakah Anda kehilangan minat pada hal-hal yang biasanya Anda sukai?,G03,Kehilangan minat dan kesenangan,0.9,Depresi
+Apakah Anda merasa cemas atau gelisah hampir setiap hari?,G04,Kecemasan berlebihan,0.8,Gangguan Kecemasan
+Apakah Anda merasa lelah meskipun tidak melakukan aktivitas berat?,G05,Kelelahan emosional,0.7,Depresi
+Apakah Anda sering menyalahkan diri sendiri atas hal-hal kecil?,G06,Rasa bersalah berlebihan,0.8,Depresi
+Apakah Anda sulit berkonsentrasi saat bekerja atau belajar?,G07,Kesulitan konsentrasi,0.7,Depresi
+Apakah Anda merasa tidak berharga atau putus asa?,G08,Perasaan tidak berharga,0.9,Depresi
+Apakah Anda merasa jantung berdebar atau napas menjadi cepat saat stres?,G09,Gejala fisik akibat cemas,0.6,Gangguan Kecemasan
+Apakah Anda menarik diri dari interaksi sosial atau teman?,G10,Menghindari interaksi sosial,0.8,Depresi
