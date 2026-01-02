@@ -158,36 +158,42 @@ router.post("/cek-mental", authenticate(["user"]), async (req, res) => {
       else penyakitMap[r.penyakit] += cf * (1 - penyakitMap[r.penyakit]);
     }
 
-    const [solusiRows] = await db.execute("SELECT * FROM solusi");
+    // Ambil semua solusi
+const [solusiRows] = await db.execute("SELECT * FROM solusi");
 
-    const hasil = [];
-    for (let p in penyakitMap) {
-      const cfFinal = penyakitMap[p];
-      const persen = Math.round(cfFinal * 100);
+const hasil = [];
+for (let p in penyakitMap) {
+  const cfFinal = penyakitMap[p];
+  const persen = Math.round(cfFinal * 100);
 
-      let level = "";
-      if (persen <= 20) level = "Tidak Terindikasi";
-      else if (persen <= 40) level = "Ringan";
-      else if (persen <= 70) level = "Sedang";
-      else level = "Berat";
+  let level = "";
+  if (persen <= 20) level = "Tidak Terindikasi";
+  else if (persen <= 40) level = "Ringan";
+  else if (persen <= 70) level = "Sedang";
+  else level = "Berat";
 
-      const s = solusiRows.find(
-        (s) => persen >= s.min_persen && persen <= s.max_persen
-      );
+  // Pilih solusi sesuai penyakit
+  const s = solusiRows.find(
+    (sol) =>
+      sol.penyakit === (["Bipolar","Anxiety","Depresi"].includes(p) ? "mood" : "sosial") &&
+      persen >= sol.min_persen &&
+      persen <= sol.max_persen
+  );
 
-      hasil.push({
-        penyakit: p,
-        level,
-        solusi: s ? s.keterangan : "Tidak ada solusi spesifik",
-        persen,
-      });
-    }
+  hasil.push({
+    penyakit: p,
+    level,
+    persen,
+    solusi: s ? s.keterangan : "Tidak ada solusi spesifik",
+  });
+}
+
 
     for (let h of hasil) {
       await db.execute(
-        `INSERT INTO diagnosa_history (user_id, hasil, level, created_at)
-         VALUES (?, ?, ?, NOW())`,
-        [userId, h.penyakit, h.level]
+        `INSERT INTO diagnosa_history (user_id, hasil, level, persen, created_at)
+         VALUES (?, ?, ?, ?, NOW())`,
+        [userId, h.penyakit, h.level, h.persen]
       );
     }
 

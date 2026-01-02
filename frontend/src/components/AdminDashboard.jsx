@@ -40,6 +40,9 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [previewData, setPreviewData] = useState([]);
   const [loadingPreview, setLoadingPreview] = useState(false);
+  const [catatanAdmin, setCatatanAdmin] = useState({});
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+
 
   const reportRef = useRef();
   const navigate = useNavigate();
@@ -209,7 +212,9 @@ export default function AdminDashboard() {
       const token = localStorage.getItem("token");
       await axios.patch(
         `http://localhost:5000/api/rujukan/${id}/reject`,
-        {},
+        {
+          catatan_admin: catatanAdmin[id] || ""
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("Berhasil ditolak");
@@ -219,6 +224,23 @@ export default function AdminDashboard() {
       alert("Gagal menolak rujukan");
     }
   };
+
+  const handleSaveCatatan = async (id, value) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.patch(
+        `http://localhost:5000/api/admin/rujukan/${id}/catatan`,
+        { catatan_admin: value },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (err) {
+      console.error("Autosave catatan gagal:", err);
+    }
+  };
+
+
+
 
   // ====================== UPLOAD CSV ======================
   const handleUpload = async () => {
@@ -626,6 +648,7 @@ export default function AdminDashboard() {
                     <th className="p-2 border">Psikolog</th>
                     <th className="p-2 border">Jadwal</th>
                     <th className="p-2 border">Status</th>
+                    <th className="p-2 border">Catatan Admin</th>
                     <th className="p-2 border">Aksi</th>
                   </tr>
                 </thead>
@@ -654,7 +677,17 @@ export default function AdminDashboard() {
                         </span>
                       </td>
 
-                      <td className="p-2 border flex gap-2 justify-center">
+                      <td className="p-2 border">
+                        <textarea
+                          rows={2}
+                          className="w-full border rounded-lg p-2 text-sm"
+                          placeholder="Catatan admin (tersimpan otomatis)"
+                          defaultValue={item.catatan_admin || ""}
+                          onBlur={(e) => handleSaveCatatan(item.id, e.target.value)}
+                        />
+                      </td>
+
+                      <td className="p-2 border flex gap-2 justify-center flex-wrap">
                         <button
                           onClick={() => handleAcc(item.id)}
                           className="px-3 py-1 rounded-lg bg-green-500 text-white hover:bg-green-600"
@@ -669,6 +702,8 @@ export default function AdminDashboard() {
                           Reject
                         </button>
                       </td>
+
+
                     </tr>
                   ))}
                 </tbody>

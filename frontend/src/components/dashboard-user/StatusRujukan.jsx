@@ -35,7 +35,6 @@ export default function StatusRujukan() {
             default:
                 return "bg-gray-100 text-gray-600";
         }
-
     };
 
     const handleDownload = async (id) => {
@@ -74,26 +73,27 @@ export default function StatusRujukan() {
                     <p className="text-gray-500">Belum ada pengajuan rujukan.</p>
                 </div>
             ) : (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto border rounded-lg">
                     <table className="w-full border-collapse text-sm">
-                        <thead>
-                            <tr className="bg-gray-100 text-left text-gray-600 border-b">
-                                <th className="p-3">Nama</th>
-                                <th className="p-3">Psikolog</th>
-                                <th className="p-3">Jadwal</th>
-                                <th className="p-3">Status</th>
-                                <th className="p-3">Aksi</th>
+                        <thead className="bg-gray-100 text-gray-600">
+                            <tr>
+                                <th className="p-3 border-b text-center">Nama</th>
+                                <th className="p-3 border-b text-center">Psikolog</th>
+                                <th className="p-3 border-b text-center">Jadwal</th>
+                                <th className="p-3 border-b text-center">Status</th>
+                                <th className="p-3 border-b text-center">Catatan Admin</th>
+                                <th className="p-3 border-b text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             {data.map((item) => (
-                                <tr key={item.id} className="border-b hover:bg-gray-50">
-                                    <td className="p-3">{item.nama}</td>
-                                    <td className="p-3">{item.psikolog}</td>
-                                    <td className="p-3">
-                                        {new Date(item.jadwal).toLocaleString()}
+                                <tr key={item.id} className="hover:bg-gray-50">
+                                    <td className="p-3 border-b text-left">{item.nama}</td>
+                                    <td className="p-3 border-b text-left">{item.psikolog}</td>
+                                    <td className="p-3 border-b text-left">
+                                        {new Date(item.jadwal).toLocaleString("id-ID")}
                                     </td>
-                                    <td className="p-3">
+                                    <td className="p-3 border-b text-center">
                                         <span
                                             className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
                                                 item.status
@@ -102,7 +102,18 @@ export default function StatusRujukan() {
                                             {item.status}
                                         </span>
                                     </td>
-                                    <td className="p-3">
+                                    <td className="p-3 border-b text-left">
+                                        {item.catatan_admin ? (
+                                            <div className="bg-gray-50 border rounded-lg p-2 text-xs text-gray-700 whitespace-pre-line">
+                                                {item.catatan_admin}
+                                            </div>
+                                        ) : (
+                                            <span className="text-gray-400 italic text-xs">
+                                                Belum ada catatan
+                                            </span>
+                                        )}
+                                    </td>
+                                    <td className="p-3 border-b text-center">
                                         <button
                                             onClick={() => handleDownload(item.id)}
                                             className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700"

@@ -10,6 +10,7 @@ export default function DashboardUserLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const notifRef = useRef(null);
+  const [waOpen, setWaOpen] = useState(false);
 
   // Tutup popup notifikasi kalau klik di luar
   useEffect(() => {
@@ -72,9 +73,8 @@ export default function DashboardUserLayout() {
     <div className="min-h-screen flex bg-[#F9FAFB] text-gray-800 relative overflow-visible">
       {/* Sidebar */}
       <div
-        className={`bg-white border-r border-gray-200 transition-all duration-500 ease-in-out shadow-sm ${
-          open ? "w-64" : "w-20"
-        } flex flex-col z-40`}
+        className={`bg-white border-r border-gray-200 transition-all duration-500 ease-in-out shadow-sm ${open ? "w-64" : "w-20"
+          } flex flex-col z-40`}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           {open && <h2 className="font-bold text-xl text-[#4DB6AC] tracking-wide select-none">PentaSoul</h2>}
@@ -93,11 +93,10 @@ export default function DashboardUserLayout() {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                  active
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${active
                     ? "bg-[#4DB6AC] text-white shadow-sm"
                     : "text-gray-700 hover:bg-[#4DB6AC]/10 hover:text-[#4DB6AC]"
-                }`}
+                  }`}
               >
                 {item.icon}
                 {open && <span className="truncate">{item.name}</span>}
@@ -190,18 +189,45 @@ export default function DashboardUserLayout() {
         </main>
       </div>
 
-      {/* Floating Chat Bubble → langsung WhatsApp */}
-      <button
-        onClick={() => {
-          const phoneNumber = "+6285726515107";
-          const defaultMessage = "Halo, saya ingin bertanya ...";
-          const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`;
-          window.open(url, "_blank");
-        }}
-        className="fixed bottom-6 right-6 bg-[#4DB6AC] hover:bg-[#81C784] text-white p-4 rounded-full shadow-lg transition duration-300 z-[9999]"
-      >
-        <MessageCircle size={24} />
-      </button>
+      {/* Floating WhatsApp Bubble */}
+      <div className="fixed bottom-6 right-6 z-[9999]">
+        {/* Popup pilihan admin */}
+        {waOpen && (
+          <div className="mb-3 bg-white rounded-2xl shadow-xl border border-gray-200 w-56 animate-fadeIn">
+            <div className="p-3 border-b text-sm font-semibold text-gray-700 bg-gray-50 rounded-t-2xl">
+              Hubungi Admin
+            </div>
+
+            <button
+              onClick={() => {
+                const url = "https://wa.me/6281229899055?text=Halo Admin 1, saya ingin bertanya";
+                window.open(url, "_blank");
+              }}
+              className="w-full text-left px-4 py-3 hover:bg-[#4DB6AC]/10 text-sm text-gray-700 transition"
+            >
+              👤 Biro Psikologi
+            </button>
+
+            <button
+              onClick={() => {
+                const url = "https://wa.me/6285726515107?text=Halo Admin 2, saya ingin bertanya";
+                window.open(url, "_blank");
+              }}
+              className="w-full text-left px-4 py-3 hover:bg-[#4DB6AC]/10 text-sm text-gray-700 transition"
+            >
+              👤 RS Ananda
+            </button>
+          </div>
+        )}
+
+        {/* Bubble utama */}
+        <button
+          onClick={() => setWaOpen(!waOpen)}
+          className="bg-[#4DB6AC] hover:bg-[#81C784] text-white p-4 rounded-full shadow-lg transition duration-300"
+        >
+          <MessageCircle size={24} />
+        </button>
+      </div>
     </div>
   );
 }

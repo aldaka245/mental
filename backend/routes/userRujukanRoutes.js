@@ -53,7 +53,7 @@ router.post("/", authenticate(["user"]), async (req, res) => {
 router.get("/", authenticate(["user"]), async (req, res) => {
   try {
     const [rows] = await db.execute(
-      `SELECT id, nama, alamat, tgl_lahir, psikolog, jadwal, status, created_at
+      `SELECT id, nama, alamat, tgl_lahir, psikolog, jadwal, status, catatan_admin, created_at
        FROM rujukan
        WHERE user_id = ?
        ORDER BY created_at DESC`,
@@ -81,18 +81,17 @@ router.patch("/:id/approve", authenticate(["admin"]), async (req, res) => {
     }
 
     const data = rows[0];
+    const { catatan_admin } = req.body; // <-- ambil catatan admin dari body
 
-    // generate PDF (buffer)
     await generateSuratRujukan(data, "approved");
 
-    // update tanpa file_url
+    // update status + catatan admin
     await db.execute(
-      "UPDATE rujukan SET status='approved', updated_at=NOW() WHERE id=?",
-      [req.params.id]
+      "UPDATE rujukan SET status='approved', catatan_admin=?, updated_at=NOW() WHERE id=?",
+      [catatan_admin || null, req.params.id]
     );
 
     res.json({ message: "Rujukan disetujui" });
-
   } catch (err) {
     console.error("Approve error:", err);
     res.status(500).json({ error: "Gagal ACC rujukan" });
@@ -114,22 +113,21 @@ router.patch("/:id/reject", authenticate(["admin"]), async (req, res) => {
     }
 
     const data = rows[0];
+    const { catatan_admin } = req.body;
 
     await generateSuratRujukan(data, "rejected");
 
     await db.execute(
-      "UPDATE rujukan SET status='rejected', updated_at=NOW() WHERE id=?",
-      [req.params.id]
+      "UPDATE rujukan SET status='rejected', catatan_admin=?, updated_at=NOW() WHERE id=?",
+      [catatan_admin || null, req.params.id]
     );
 
     res.json({ message: "Rujukan ditolak" });
-
   } catch (err) {
     console.error("Reject error:", err);
     res.status(500).json({ error: "Gagal menolak rujukan" });
   }
 });
-
 
 
 // GET rujukan milik user
@@ -138,7 +136,7 @@ router.get("/user", authenticate(["user"]), async (req, res) => {
     const userId = req.user.id;
 
     const [rows] = await db.execute(
-      `SELECT id, nama, psikolog, jadwal, status, created_at 
+      `SELECT id, nama, psikolog, jadwal, status, catatan_admin, created_at 
        FROM rujukan WHERE user_id = ? ORDER BY created_at DESC`,
       [userId]
     );

@@ -149,26 +149,25 @@ export default function UserForm() {
               <table className="table-auto border-collapse w-full text-center">
                 <thead>
                   <tr className="bg-gradient-to-r from-[#4DB6AC]/20 via-[#81C784]/20 to-[#FFB74D]/20">
-                    <th className="border px-3 py-2 font-semibold text-[#4DB6AC]">
-                      Penyakit
-                    </th>
-                    <th className="border px-3 py-2 font-semibold text-[#81C784]">
-                      Level
-                    </th>
-                    <th className="border px-3 py-2 font-semibold text-[#FFB74D]">
-                      Solusi
-                    </th>
+                    <th className="border px-3 py-2 font-semibold text-[#4DB6AC]">Penyakit</th>
+                    <th className="border px-3 py-2 font-semibold text-[#81C784]">Level</th>
+                    <th className="border px-3 py-2 font-semibold text-[#FFB74D]">Persentase</th>
+                    <th className="border px-3 py-2 font-semibold text-[#4DB6AC]">Solusi</th>
                   </tr>
                 </thead>
                 <tbody>
                   {hasil.map((h, idx) => (
-                    <tr
-                      key={idx}
-                      className="border-t hover:bg-[#E8F5E9] transition duration-200"
-                    >
+                    <tr key={idx} className="border-t hover:bg-[#E8F5E9] transition duration-200">
                       <td className="border px-3 py-2">{h.penyakit}</td>
-                      <td className="border px-3 py-2 text-[#81C784] font-semibold">
-                        {h.level}
+                      <td className="border px-3 py-2 text-[#81C784] font-semibold">{h.level}</td>
+                      <td className="border px-3 py-2">
+                        <div className="relative w-full h-3 bg-gray-200 rounded-full">
+                          <div
+                            className="absolute h-3 bg-[#4DB6AC] rounded-full"
+                            style={{ width: `${h.persen}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-xs text-gray-700 mt-1 block">{h.persen}%</span>
                       </td>
                       <td className="border px-3 py-2">{h.solusi}</td>
                     </tr>
